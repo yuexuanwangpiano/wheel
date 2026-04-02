@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Wheel">
-<title>Spin the Wheel</title>
+<meta name="apple-mobile-web-app-title" content="Your Music Spin">
+<title>Your Music Spin</title>
 <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE3klEQVR42u3dwXEUMRCFYcVBCD5woIozOZAGmRAFYRASCXAeOFGUd73eGam732v9qnf2yK2vWlP2rjRePnwk5G4GJSDgIOAg4CDgIOAg4CDgIOAg4CDgIAQcBBy3+f3z06qAAw27WxmAAEpzHOUmWioZmEBJNxxBC3kcB0RccUyu0K/P329zvD2+fflxm32UjN4s7mqYxLHECjhqWDwDYiGOGSjgSGJx1kQEjmtKwBEl47KJUBxnlYBDjsVjH/My3ImMzVnk4DAlMrxkLGeRieN5IuA4JyOIRT6OJ4mAo55FFQ4LIkNZRgKLWhzPENkUh4iMchyyPsbmLERwaBIZyNDBoeZjIEMKh5SPISKjioUgjneJNMQhK0MTh4KPgQxZHOU+BjKUcdT6GMgQx1HoYyBDH0eVjxocUjIscDzwYYnDRcZdH2oySnwMZBjhSPYxkOGFI9NHHg5lGV443vJhgMNRhh2OHB+DDaUTjrU+BjJMcST4GGwovjiiN5eBDGscoT7AAY5gHO4yrHHE+RjIaIAjyAc4wBGGo4eMBjgifIADHDE42sjogWO5D3Dc8WEqQwhHMxk9cKz1AQ5wpOCwltEGx10fqTj6tY3eOK75GLSNfjhWNY9B29gExwUfg7bREseS5gEOcKzD0XVP2QHHWR+DttEVx3zzAAc4FuFovKdsguOUj0HbaIxjsnmAAxzgAEcojt4vHPvgeN7HoG288tFJxmTzAAc4wAEOcICjAMcO/1LRP1Aw+Z108Omed8e2zWNTHMf5AY4tcBxXBzia4zjmBjjAAY79cBwrBjjAAY4JHK9KtokMFx+vJlyM48IAx7WVvjD8cCRj0sGRX7r+OCY9BeGwqEMqjoPhNugcjyqysiF9ffkXOocEjsf3eL+bIBwXAo7wxfbFkY+pGEfySm+FY95TNg7HbCLjNuAABzhKfTjKAAc4wFHqw1QGOMJ9+MoARyARaxbgiCLSgMVdGYtx9PbxP5QeIObbBjjAAQ5wgAMc4Ah/M+0tIwRHex+b4Eg9hxQc4AAHOMDRCEfqCcab/KmUtgEOcIBjVxwF96009tEeR9kFgOAABzh22VMWXzoMjk5tAxw9cRTfSN3SR2McqXfZg6N92wAHOGJwNP6+AjLA8fBwRHBM4mj8NUlkgAMckTi6ns6ADHCAIxhHDx/WOCJkLMPRwIcvjiAZ4ABHCg53H6Y44mSAwxvHW7+LIg5rH3Y4omWsx+HroweOtUu5HoepDy8cCTLAYYkjYUMJxOHowwVHmoxAHHY+LHBkyojFYeTD4ijBZBngsMHxYPKuOFx8iOMokZGBw8KHMo4qGUk49H3I4iiUkYdD3IcmjloZqTiUfQjiKJeRjUPWhxSOx1PNXKxsHJo+dHDoyKjBIehDBIeUjDIcakTKcaixqMeh46MWh6aMehwiPqpwvDux2qWpx6FAJB+HOAstHLU+MnE8Mx+RFRHCUegjB8eTk9FZDi0cVUSicdix0MWRTCT06lBTFuo40nxE4Dg1Adn6S+PIIbIQx9lHi1feAEc0kUkc1x5qUXMbHHFEzuKYfJxRtc1wRDeSvyCCfrJjkV1xGH162be83jiUlTSoahMcOko6FbMbjhIoXQvYGUeclU0qthEOAg4CDgIOAg4CDgIOAg4CDgIOQsBBwEGm8wfN/hMsEos3agAAAABJRU5ErkJggg==">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,6 +114,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 
 /* ═══════════════════════════════ APP LAYOUT ═══════════════════════════════ */
 #appScreen { display: none; height: 100vh; overflow: hidden; }
+@media (max-width: 699px) { #appScreen { overflow: visible; height: auto; min-height: 100vh; } }
 @media (min-width: 700px) {
   #appScreen { display: none; flex-direction: row; }
   #appScreen.visible { display: flex !important; }
@@ -160,6 +161,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 
 /* ═══════════════════════════════ MAIN CONTENT ═══════════════════════════════ */
 #mainContent { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
+@media (max-width: 699px) { #mainContent { height: auto; overflow-y: visible; } }
 @media (min-width: 700px) { #mainContent { margin-left: var(--sidebar); } }
 #topbar { display: flex; align-items: center; gap: 10px; padding: 13px 18px; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
 #hamburger { background: none; border: none; padding: 4px; display: flex; flex-direction: column; gap: 5px; }
@@ -219,7 +221,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 #wheelGrid[data-count="4"] .wheel-wrap { --ws: min(200px, 34vw); }
 @media (max-width: 699px) { #wheelGrid .wheel-wrap { --ws: min(270px, 82vw) !important; } }
 .pointer-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--accent3); filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); z-index: 2; }
-.wheel-canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+.wheel-canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; }
 .card-result { margin-top: 9px; font-size: .9rem; font-weight: 700; min-height: 1.3em; text-align: center; color: var(--red); }
 /* Result overlay on top of wheel */
 .wheel-result-overlay {
@@ -271,7 +273,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 <div class="login-screen visible" id="login-screen">
   <div class="login-box">
     <div class="login-logo">🎡</div>
-    <div class="login-title">Spin the Wheel</div>
+    <div class="login-title">Your Music Spin</div>
 
     <div class="login-error" id="login-error"></div>
     <div class="section-label">Username</div>
@@ -293,7 +295,7 @@ input { -webkit-appearance: none; font-family: inherit; }
   <div id="overlay" onclick="closeSidebar()"></div>
   <div id="sidebar">
     <div class="sb-header">
-      <div class="sb-app-name">🎡 Spin the Wheel</div>
+      <div class="sb-app-name">🎡 Your Music Spin</div>
       <div class="sb-username" id="sbUsername"></div>
     </div>
     <div class="sb-section-label">Pages</div>
@@ -640,6 +642,56 @@ function renderGrid() {
 function updateSpinBtn() {
   document.getElementById('spinAllBtn').disabled = Object.values(rt).some(s => s.spinning);
 }
+
+/* ── Spinning sound via Web Audio API ── */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playSpinSound(duration) {
+  try {
+    const ctx = getAudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const bufSize = ctx.sampleRate * (duration / 1000);
+    const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // Generate click track that slows down over time (like a ratchet)
+    // Fast at start, slow at end — matches easeOut spin
+    for (let i = 0; i < bufSize; i++) {
+      const t = i / ctx.sampleRate;          // time in seconds
+      const progress = t / (duration / 1000);
+      const eased = 1 - Math.pow(1 - progress, 4); // mirror easeOut
+      const speed = 1 - eased;                // fast→slow
+      const clickRate = 4 + speed * 28;      // 4–32 clicks/sec
+      const phase = (t * clickRate) % 1;
+      // Sharp click at each beat
+      data[i] = phase < 0.06 ? (1 - phase / 0.06) * (1 - progress) * 0.35 : 0;
+    }
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    // Gentle high-pass filter to make it sound crisper
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.value = 800;
+
+    // Gain fades out at end
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(1, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration / 1000);
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    source.start();
+    return source;
+  } catch(e) { /* audio not supported, fail silently */ }
+}
+
 function spinAll() {
   const wheels = getWheels();
   if (!wheels.length || Object.values(rt).some(s => s.spinning)) return;
@@ -662,6 +714,7 @@ function spinWheel(w, t0) {
   overlay?.classList.remove('visible');
   const totalRot = (4 + Math.random() * 3) * Math.PI * 2 + Math.random() * Math.PI * 2;
   const duration = 3800 + Math.random() * 800;
+  playSpinSound(duration); // 🔊 start sound
   const startAngle = state.angle;
   const items = [...w.items];
   function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
@@ -781,31 +834,40 @@ function buildCard(w) {
 
 /* ═══════════════════ DRAW ═══════════════════ */
 function drawOnCanvas(canvas, items, angle) {
-  const ctx = canvas.getContext('2d');
-  const cx = canvas.width / 2, cy = canvas.height / 2, r = cx - 14, n = items.length;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Use offscreen canvas to avoid flicker (double buffering)
+  const off = document.createElement('canvas');
+  off.width = canvas.width; off.height = canvas.height;
+  const ctx = off.getContext('2d');
+  const cx = off.width / 2, cy = off.height / 2, r = cx - 14, n = items.length;
+
   if (n === 0) {
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fillStyle = '#e5e5ea'; ctx.fill();
     ctx.fillStyle = '#aeaeb2'; ctx.font = '22px -apple-system, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('No items yet', cx, cy); return;
+    ctx.fillText('No items yet', cx, cy);
+  } else {
+    const arc = (Math.PI * 2) / n;
+    for (let i = 0; i < n; i++) {
+      const start = angle + i * arc, end = start + arc;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath();
+      ctx.fillStyle = COLORS[i % COLORS.length]; ctx.fill();
+      ctx.strokeStyle = 'white'; ctx.lineWidth = 4; ctx.stroke();
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + arc / 2);
+      const label = items[i].length > 14 ? items[i].slice(0, 14) + '…' : items[i];
+      const fontSize = Math.min(34, Math.max(16, Math.floor(240 / Math.max(n, 2))));
+      ctx.font = `600 ${fontSize}px -apple-system, sans-serif`; ctx.fillStyle = '#2c2c2e';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 5;
+      ctx.fillText(label, r - 18, 0); ctx.restore();
+    }
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = 'white'; ctx.lineWidth = 6; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.fillStyle = 'white'; ctx.fill();
+    ctx.strokeStyle = '#e5e5ea'; ctx.lineWidth = 2; ctx.stroke();
   }
-  const arc = (Math.PI * 2) / n;
-  for (let i = 0; i < n; i++) {
-    const start = angle + i * arc, end = start + arc;
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath();
-    ctx.fillStyle = COLORS[i % COLORS.length]; ctx.fill();
-    ctx.strokeStyle = 'white'; ctx.lineWidth = 4; ctx.stroke();
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + arc / 2);
-    const label = items[i].length > 14 ? items[i].slice(0, 14) + '…' : items[i];
-    const fontSize = Math.min(34, Math.max(16, Math.floor(240 / Math.max(n, 2))));
-    ctx.font = `600 ${fontSize}px -apple-system, sans-serif`; ctx.fillStyle = '#2c2c2e';
-    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 5;
-    ctx.fillText(label, r - 18, 0); ctx.restore();
-  }
-  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = 'white'; ctx.lineWidth = 6; ctx.stroke();
-  ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.fillStyle = 'white'; ctx.fill();
-  ctx.strokeStyle = '#e5e5ea'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Blit offscreen → visible in one atomic operation (no flicker)
+  const main = canvas.getContext('2d');
+  main.clearRect(0, 0, canvas.width, canvas.height);
+  main.drawImage(off, 0, 0);
 }
 
 /* ═══════════════════ INIT ═══════════════════ */

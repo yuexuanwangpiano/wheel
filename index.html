@@ -222,7 +222,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 @media (max-width: 699px) { #wheelGrid .wheel-wrap { --ws: min(270px, 82vw) !important; } }
 .pointer-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--accent3); filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); z-index: 2; }
 .wheel-canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; }
-.card-result { margin-top: 9px; font-size: .9rem; font-weight: 700; min-height: 1.3em; text-align: center; color: var(--red); }
+.card-result { display: none; }
 /* Result overlay on top of wheel */
 .wheel-result-overlay {
   position: absolute;
@@ -573,18 +573,18 @@ async function addPresetWheel(type) {
   if (wheels.length >= MAX_WHEELS) return;
 
   const KEYS = [
-    'C major - A minor',
-    'G major - E minor',
-    'D major - B minor',
-    'A major - F♯ minor',
-    'E major - C♯ minor',
-    'B major - G♯ minor',
-    'F♯ major - D♯ minor',
-    'C♯ major - A♯ minor',
-    'F major - D minor',
-    'B♭ major - G minor',
-    'E♭ major - C minor',
-    'A♭ major - F minor',
+    'C - Am',
+    'G - Em',
+    'D - Bm',
+    'A - F♯m',
+    'E - C♯m',
+    'B - G♯m',
+    'F♯ - D♯m',
+    'C♯ - A♯m',
+    'F - Dm',
+    'B♭ - Gm',
+    'E♭ - Cm',
+    'A♭ - Fm',
   ];
   const MAJOR = ['C','G','D','A','E','B','F♯','C♯','F','B♭','E♭','A♭'];
   const MINOR = ['A','E','B','F♯','C♯','G♯','D♯','A♯','D','G','C','F'];

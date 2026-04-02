@@ -601,6 +601,7 @@ async function addPresetWheel(type) {
   renderGrid();
 }
 window.addPresetWheel = addPresetWheel;
+async function addWheel() {
   const wheels = getWheels();
   if (wheels.length >= MAX_WHEELS) return;
   wheels.push(makeWheel(`Wheel ${wheels.length + 1}`));

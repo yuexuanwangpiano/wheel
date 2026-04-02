@@ -191,6 +191,10 @@ input { -webkit-appearance: none; font-family: inherit; }
 #addWheelBtn { display: flex; align-items: center; gap: 6px; padding: 9px 22px; font-size: .88rem; font-weight: 600; color: var(--red); background: var(--card); border: 2px dashed rgba(231,76,60,.35); border-radius: 100px; transition: background .15s, border-color .15s; }
 #addWheelBtn:hover { background: var(--red-soft); border-color: var(--red); }
 #addWheelBtn:disabled { color: var(--muted); border-color: var(--border); background: var(--card); cursor: default; }
+.preset-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 360px; }
+.preset-btn { padding: 7px 16px; font-size: .78rem; font-weight: 700; color: var(--accent3); background: rgba(245,184,50,0.1); border: 1.5px solid rgba(245,184,50,0.35); border-radius: 100px; transition: background .15s, border-color .15s; letter-spacing: .04em; }
+.preset-btn:hover { background: rgba(245,184,50,0.22); border-color: var(--accent3); }
+.preset-btn:disabled { color: var(--muted); border-color: var(--border); background: var(--card); cursor: default; opacity: 0.5; }
 
 /* Empty state */
 #emptyState { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--muted); text-align: center; }
@@ -314,7 +318,12 @@ input { -webkit-appearance: none; font-family: inherit; }
       <div id="wheelGrid"></div>
       <div id="bottomBar">
         <button id="spinAllBtn" onclick="spinAll()">SPIN ALL</button>
-        <button id="addWheelBtn" onclick="addWheel()">＋ Add Wheel</button>
+        <button id="addWheelBtn" onclick="addWheel()">＋ NEW</button>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="addPresetWheel('keys')">＋ All Keys Wheel</button>
+          <button class="preset-btn" onclick="addPresetWheel('major')">＋ All Major Wheel</button>
+          <button class="preset-btn" onclick="addPresetWheel('minor')">＋ All Minor Wheel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -557,7 +566,41 @@ async function saveWheels(wheels) {
 
 /* ═══════════════════ WHEELS ═══════════════════ */
 function makeWheel(name = 'New Wheel', items = []) { return { id: uid(), name, items }; }
-async function addWheel() {
+async function addPresetWheel(type) {
+  const wheels = getWheels();
+  if (wheels.length >= MAX_WHEELS) return;
+
+  const KEYS = [
+    'C major - A minor',
+    'G major - E minor',
+    'D major - B minor',
+    'A major - F♯ minor',
+    'E major - C♯ minor',
+    'B major - G♯ minor',
+    'F♯ major - D♯ minor',
+    'C♯ major - A♯ minor',
+    'F major - D minor',
+    'B♭ major - G minor',
+    'E♭ major - C minor',
+    'A♭ major - F minor',
+    'D♭ major - B♭ minor',
+    'G♭ major - E♭ minor',
+    'C♭ major - A♭ minor',
+  ];
+  const MAJOR = ['C','G','D','A','E','B','F♯','C♯','F','B♭','E♭','A♭','D♭','G♭','C♭'];
+  const MINOR = ['A','E','B','F♯','C♯','G♯','D♯','A♯','D','G','C','F','B♭','E♭','A♭'];
+
+  const presets = {
+    keys:  { name: 'All Keys',  items: KEYS },
+    major: { name: 'All Major', items: MAJOR.map(k => k + ' major') },
+    minor: { name: 'All Minor', items: MINOR.map(k => k + ' minor') },
+  };
+  const p = presets[type];
+  wheels.push(makeWheel(p.name, p.items));
+  await saveWheels(wheels);
+  renderGrid();
+}
+window.addPresetWheel = addPresetWheel;
   const wheels = getWheels();
   if (wheels.length >= MAX_WHEELS) return;
   wheels.push(makeWheel(`Wheel ${wheels.length + 1}`));
@@ -591,6 +634,7 @@ function renderGrid() {
     grid.appendChild(buildCard(w));
   });
   document.getElementById('addWheelBtn').disabled = wheels.length >= MAX_WHEELS;
+  document.querySelectorAll('.preset-btn').forEach(b => b.disabled = wheels.length >= MAX_WHEELS);
   updateSpinBtn();
 }
 

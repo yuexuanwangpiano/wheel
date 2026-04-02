@@ -651,50 +651,47 @@ function getAudioCtx() {
 }
 function playSpinSound(duration) {
   try {
+    // Must create/resume AudioContext synchronously inside user gesture (mobile requirement)
     const ctx = getAudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
+    ctx.resume().then(() => {
+      const bufSize = Math.floor(ctx.sampleRate * (duration / 1000));
+      const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
 
-    const bufSize = ctx.sampleRate * (duration / 1000);
-    const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        const t = i / ctx.sampleRate;
+        const progress = t / (duration / 1000);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const speed = 1 - eased;
+        const clickRate = 4 + speed * 28;
+        const phase = (t * clickRate) % 1;
+        data[i] = phase < 0.06 ? (1 - phase / 0.06) * (1 - progress) * 0.35 : 0;
+      }
 
-    // Generate click track that slows down over time (like a ratchet)
-    // Fast at start, slow at end — matches easeOut spin
-    for (let i = 0; i < bufSize; i++) {
-      const t = i / ctx.sampleRate;          // time in seconds
-      const progress = t / (duration / 1000);
-      const eased = 1 - Math.pow(1 - progress, 4); // mirror easeOut
-      const speed = 1 - eased;                // fast→slow
-      const clickRate = 4 + speed * 28;      // 4–32 clicks/sec
-      const phase = (t * clickRate) % 1;
-      // Sharp click at each beat
-      data[i] = phase < 0.06 ? (1 - phase / 0.06) * (1 - progress) * 0.35 : 0;
-    }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
 
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 800;
 
-    // Gentle high-pass filter to make it sound crisper
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'highpass';
-    filter.frequency.value = 800;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(1, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration / 1000);
 
-    // Gain fades out at end
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(1, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration / 1000);
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-    source.start();
-    return source;
-  } catch(e) { /* audio not supported, fail silently */ }
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      source.start();
+    });
+  } catch(e) { /* audio not supported */ }
 }
 
 function spinAll() {
   const wheels = getWheels();
   if (!wheels.length || Object.values(rt).some(s => s.spinning)) return;
+  // Unlock audio synchronously inside user gesture (critical for iOS/mobile)
+  try { getAudioCtx().resume(); } catch(e) {}
   // Clear previous results
   document.querySelectorAll('.card-result').forEach(el => el.textContent = '');
   document.querySelectorAll('.wheel-result-overlay').forEach(el => el.classList.remove('visible'));

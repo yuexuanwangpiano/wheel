@@ -654,50 +654,58 @@ function playSpinSound(duration) {
     const ctx = getAudioCtx();
     ctx.resume().then(() => {
       const dur = duration / 1000;
+      const sampleRate = ctx.sampleRate;
 
-      // ── Whoosh: filtered white noise ──
-      const bufSize = Math.floor(ctx.sampleRate * dur);
-      const noiseBuffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+      // Prize wheel: individual ticks scheduled at decelerating intervals
+      // Simulates pegs flicking past a flexible stopper/flapper
+      // Speed follows same easeOut curve as the visual wheel
+      function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = noiseBuffer;
+      // Build a single "tick" buffer — short percussive click with quick decay
+      const tickDur = 0.045; // seconds per tick sound
+      const tickSamples = Math.floor(sampleRate * tickDur);
+      const tickBuffer = ctx.createBuffer(1, tickSamples, sampleRate);
+      const tickData = tickBuffer.getChannelData(0);
+      for (let i = 0; i < tickSamples; i++) {
+        const t = i / tickSamples;
+        // Sharp attack then exponential decay — like a plastic flapper
+        const env = Math.exp(-t * 40);
+        // Mix of noise (flap texture) + low tone (peg thud)
+        const noise = (Math.random() * 2 - 1) * 0.6;
+        const tone = Math.sin(2 * Math.PI * 180 * i / sampleRate) * 0.5;
+        tickData[i] = (noise + tone) * env;
+      }
 
-      // Band-pass sweeps high → low as wheel decelerates
-      const bpFilter = ctx.createBiquadFilter();
-      bpFilter.type = 'bandpass';
-      bpFilter.Q.value = 3;
-      bpFilter.frequency.setValueAtTime(1800, ctx.currentTime);
-      bpFilter.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + dur * 0.85);
-      bpFilter.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + dur);
+      // Schedule ticks at decelerating intervals across the full duration
+      const pegs = 12; // prize wheels typically have 12–24 pegs
+      // At full speed: ~pegs ticks per second; at stop: ~0.5/sec
+      const maxTickRate = pegs;  // ticks/sec at start
+      const minTickRate = 0.8;   // ticks/sec at end
 
-      // ── Gentle oscillator hum ──
-      const osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(160, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + dur * 0.85);
-      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + dur);
+      let t = 0;
+      while (t < dur) {
+        const progress = t / dur;
+        const speed = 1 - easeOut(progress);       // 1→0 as wheel slows
+        const tickRate = minTickRate + speed * (maxTickRate - minTickRate);
+        const interval = 1 / tickRate;
 
-      const oscGain = ctx.createGain();
-      oscGain.gain.setValueAtTime(0.04, ctx.currentTime);
-      oscGain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur);
+        const source = ctx.createBufferSource();
+        source.buffer = tickBuffer;
 
-      // ── Master gain: fast attack, smooth fade out ──
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.08);
-      masterGain.gain.setValueAtTime(0.6, ctx.currentTime + dur * 0.6);
-      masterGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        // Volume also drops as wheel slows (quieter ticks at end)
+        const g = ctx.createGain();
+        const vol = 0.15 + speed * 0.55;
+        // Slight pitch variation per tick for naturalness
+        source.playbackRate.value = 0.85 + Math.random() * 0.35;
 
-      noiseSource.connect(bpFilter);
-      bpFilter.connect(masterGain);
-      osc.connect(oscGain);
-      oscGain.connect(masterGain);
-      masterGain.connect(ctx.destination);
+        g.gain.setValueAtTime(vol, ctx.currentTime + t);
+        source.connect(g);
+        g.connect(ctx.destination);
+        source.start(ctx.currentTime + t);
+        source.stop(ctx.currentTime + t + tickDur);
 
-      noiseSource.start(); noiseSource.stop(ctx.currentTime + dur);
-      osc.start(); osc.stop(ctx.currentTime + dur);
+        t += interval;
+      }
     });
   } catch(e) { /* audio not supported */ }
 }

@@ -651,38 +651,53 @@ function getAudioCtx() {
 }
 function playSpinSound(duration) {
   try {
-    // Must create/resume AudioContext synchronously inside user gesture (mobile requirement)
     const ctx = getAudioCtx();
     ctx.resume().then(() => {
-      const bufSize = Math.floor(ctx.sampleRate * (duration / 1000));
-      const buffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
+      const dur = duration / 1000;
 
-      for (let i = 0; i < bufSize; i++) {
-        const t = i / ctx.sampleRate;
-        const progress = t / (duration / 1000);
-        const eased = 1 - Math.pow(1 - progress, 4);
-        const speed = 1 - eased;
-        const clickRate = 4 + speed * 28;
-        const phase = (t * clickRate) % 1;
-        data[i] = phase < 0.06 ? (1 - phase / 0.06) * (1 - progress) * 0.35 : 0;
-      }
+      // ── Whoosh: filtered white noise ──
+      const bufSize = Math.floor(ctx.sampleRate * dur);
+      const noiseBuffer = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
 
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
 
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'highpass';
-      filter.frequency.value = 800;
+      // Band-pass sweeps high → low as wheel decelerates
+      const bpFilter = ctx.createBiquadFilter();
+      bpFilter.type = 'bandpass';
+      bpFilter.Q.value = 3;
+      bpFilter.frequency.setValueAtTime(1800, ctx.currentTime);
+      bpFilter.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + dur * 0.85);
+      bpFilter.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + dur);
 
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(1, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration / 1000);
+      // ── Gentle oscillator hum ──
+      const osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + dur * 0.85);
+      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + dur);
 
-      source.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-      source.start();
+      const oscGain = ctx.createGain();
+      oscGain.gain.setValueAtTime(0.04, ctx.currentTime);
+      oscGain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur);
+
+      // ── Master gain: fast attack, smooth fade out ──
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.08);
+      masterGain.gain.setValueAtTime(0.6, ctx.currentTime + dur * 0.6);
+      masterGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+
+      noiseSource.connect(bpFilter);
+      bpFilter.connect(masterGain);
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      masterGain.connect(ctx.destination);
+
+      noiseSource.start(); noiseSource.stop(ctx.currentTime + dur);
+      osc.start(); osc.stop(ctx.currentTime + dur);
     });
   } catch(e) { /* audio not supported */ }
 }

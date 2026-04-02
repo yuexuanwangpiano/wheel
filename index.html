@@ -6,16 +6,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Spin the Wheel</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%232a1a2e'/%3E%3Ccircle cx='90' cy='90' r='62' fill='none' stroke='%23f5b832' stroke-width='4'/%3E%3Cpath d='M90 28 L90 90 L131 131' stroke='%23e8358a' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L49 131' stroke='%23e8522a' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L152 90' stroke='%23f5b832' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L28 90' stroke='%236b3fa0' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='90' cy='90' r='10' fill='%23f5b832'/%3E%3Cpolygon points='90,18 95,30 83,30' fill='%23f5b832'/%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wheel">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --red: #e74c3c;
-  --red-soft: rgba(231,76,60,0.12);
-  --bg: #f2f2f7;
-  --card: #ffffff;
-  --border: #e5e5ea;
-  --text: #1c1c1e;
-  --muted: #8e8e93;
+  --red: #e8522a;
+  --red-soft: rgba(232,82,42,0.12);
+  --bg: #f0ebe0;
+  --card: #faf7f2;
+  --border: #ddd6c8;
+  --text: #2a1f1a;
+  --muted: #9e8e7e;
+  --accent2: #e8358a;
+  --accent3: #f5b832;
+  --purple: #6b3fa0;
   --sidebar: 240px;
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); -webkit-text-size-adjust: 100%; }
@@ -96,12 +102,12 @@ input { -webkit-appearance: none; font-family: inherit; }
   padding: 13px;
   font-size: 0.95rem;
   font-weight: 700;
-  background: var(--red);
+  background: linear-gradient(135deg, var(--red), var(--accent2));
   color: white;
   border: none;
   border-radius: 11px;
   margin-top: 18px;
-  box-shadow: 0 3px 12px rgba(231,76,60,.3);
+  box-shadow: 0 3px 12px rgba(232,53,138,.3);
   transition: opacity 0.15s;
 }
 .save-btn:active { opacity: 0.8; }
@@ -124,31 +130,36 @@ input { -webkit-appearance: none; font-family: inherit; }
 #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 40; }
 #overlay.show { display: block; }
 #sidebar {
-  width: var(--sidebar); flex-shrink: 0; background: var(--card);
-  border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden;
+  width: var(--sidebar); flex-shrink: 0;
+  background: linear-gradient(180deg, #2a1a2e 0%, #1a1018 100%);
+  border-right: none; display: flex; flex-direction: column; overflow: hidden;
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
   transform: translateX(-100%); transition: transform .25s cubic-bezier(.4,0,.2,1);
 }
 #sidebar.open { transform: translateX(0); }
-.sb-header { padding: 18px 16px 14px; border-bottom: 1px solid var(--border); }
-.sb-app-name { font-size: 1rem; font-weight: 800; letter-spacing: -.3px; }
-.sb-username { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-.sb-section-label { font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 14px 16px 6px; }
+.sb-header { padding: 18px 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sb-app-name { font-size: 1rem; font-weight: 800; letter-spacing: -.3px; color: var(--accent3); }
+.sb-username { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+.sb-section-label { font-size: 0.7rem; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: .08em; padding: 14px 16px 6px; }
 #pageList { flex: 1; overflow-y: auto; padding: 4px 8px; }
 .page-item { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 9px; cursor: pointer; user-select: none; transition: background .12s; }
-.page-item:hover { background: var(--bg); }
-.page-item.active { background: var(--red-soft); }
-.page-item.active .page-name { color: var(--red); font-weight: 600; }
+.page-item:hover { background: rgba(255,255,255,0.07); }
+.page-item.active { background: rgba(232,82,42,0.25); }
+.page-item.active .page-name { color: var(--accent3); font-weight: 600; }
 .page-icon { font-size: .95rem; flex-shrink: 0; }
-.page-name { flex: 1; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.page-del { background: none; border: none; color: #c7c7cc; font-size: 1rem; padding: 2px 4px; border-radius: 4px; opacity: 0; transition: opacity .12s, color .12s; }
+.page-name { flex: 1; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.75); }
+.page-del { background: none; border: none; color: rgba(255,255,255,0.25); font-size: 1rem; padding: 2px 4px; border-radius: 4px; opacity: 0; transition: opacity .12s, color .12s; }
 .page-item:hover .page-del { opacity: 1; }
-.page-del:hover { color: var(--red); }
-.sb-new-page-btn { margin: 8px; width: calc(100% - 16px); padding: 9px; font-size: .85rem; font-weight: 600; color: var(--red); background: var(--red-soft); border: none; border-radius: 9px; transition: background .12s; }
-.sb-new-page-btn:active { background: rgba(231,76,60,.22); }
-.sb-footer { padding: 10px 8px 12px; border-top: 1px solid var(--border); }
-.sb-logout { width: 100%; padding: 9px; font-size: .83rem; font-weight: 600; color: var(--muted); background: none; border: 1.5px solid var(--border); border-radius: 9px; transition: color .12s, border-color .12s; }
-.sb-logout:hover { color: var(--red); border-color: var(--red); }
+.page-del:hover { color: var(--accent2); }
+.sb-new-page-btn { margin: 8px; width: calc(100% - 16px); padding: 9px; font-size: .85rem; font-weight: 600; color: var(--accent3); background: rgba(245,184,50,0.12); border: none; border-radius: 9px; transition: background .12s; }
+.sb-new-page-btn:active { background: rgba(245,184,50,0.22); }
+.sb-footer { padding: 10px 8px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+.sb-logout { width: 100%; padding: 9px; font-size: .83rem; font-weight: 600; color: rgba(255,255,255,0.4); background: none; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 9px; transition: color .12s, border-color .12s; }
+.sb-logout:hover { color: var(--accent2); border-color: var(--accent2); }
+.page-rename-btn { background: none; border: none; color: rgba(255,255,255,0.25); font-size: 0.85rem; padding: 2px 3px; border-radius: 4px; opacity: 0; transition: opacity .12s, color .12s; cursor: pointer; flex-shrink: 0; }
+.page-item:hover .page-rename-btn { opacity: 1; }
+.page-rename-btn:hover { color: var(--accent3); }
+.page-rename-inp { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid var(--accent3); border-radius: 5px; color: white; font-size: .88rem; padding: 2px 6px; outline: none; min-width: 0; }
 
 /* ═══════════════════════════════ MAIN CONTENT ═══════════════════════════════ */
 #mainContent { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
@@ -170,7 +181,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 
 /* Bottom bar */
 #bottomBar { display: flex; flex-direction: column; align-items: center; gap: 13px; padding: 22px 20px 44px; }
-#spinAllBtn { width: 100%; max-width: 320px; padding: 15px 0; font-size: 1.05rem; font-weight: 800; letter-spacing: .08em; background: var(--red); color: white; border: none; border-radius: 100px; box-shadow: 0 5px 20px rgba(231,76,60,.38); transition: opacity .15s, transform .1s; }
+#spinAllBtn { width: 100%; max-width: 320px; padding: 15px 0; font-size: 1.05rem; font-weight: 800; letter-spacing: .08em; background: linear-gradient(135deg, var(--red), var(--accent2)); color: white; border: none; border-radius: 100px; box-shadow: 0 5px 20px rgba(232,53,138,.35); transition: opacity .15s, transform .1s; }
 #spinAllBtn:active { opacity: .85; transform: scale(.98); }
 #spinAllBtn:disabled { background: #c7c7cc; box-shadow: none; transform: none; }
 #addWheelBtn { display: flex; align-items: center; gap: 6px; padding: 9px 22px; font-size: .88rem; font-weight: 600; color: var(--red); background: var(--card); border: 2px dashed rgba(231,76,60,.35); border-radius: 100px; transition: background .15s, border-color .15s; }
@@ -198,7 +209,7 @@ input { -webkit-appearance: none; font-family: inherit; }
 #wheelGrid[data-count="2"] .wheel-wrap { --ws: min(230px, 38vw); }
 #wheelGrid[data-count="3"] .wheel-wrap, #wheelGrid[data-count="4"] .wheel-wrap { --ws: min(200px, 36vw); }
 @media (max-width: 520px) { #wheelGrid .wheel-wrap { --ws: min(270px, 82vw) !important; } }
-.pointer-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--red); filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); z-index: 2; }
+.pointer-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--accent3); filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); z-index: 2; }
 .wheel-canvas { width: 100%; height: 100%; display: block; touch-action: none; }
 .card-result { margin-top: 9px; font-size: .9rem; font-weight: 700; min-height: 1.3em; text-align: center; color: var(--red); }
 .card-items { border-top: 1px solid var(--border); padding: 11px 13px 15px; }
@@ -227,7 +238,7 @@ input { -webkit-appearance: none; font-family: inherit; }
   <div class="login-box">
     <div class="login-logo">🎡</div>
     <div class="login-title">Spin the Wheel</div>
-    <div class="login-sub">Your private wheel space</div>
+
     <div class="login-error" id="login-error"></div>
     <div class="section-label">Username</div>
     <input type="text" class="login-input" id="login-username" placeholder="" autocomplete="off" autocapitalize="none">
@@ -296,7 +307,7 @@ const db = getFirestore(firebaseApp);
 
 /* ═══════════════════ CONSTANTS ═══════════════════ */
 const MAX_WHEELS = 4;
-const COLORS = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#F7DC6F','#C39BD3','#7FB3D3','#F0A27A','#76D7C4','#F1948A'];
+const COLORS = ['#e8522a','#f5b832','#e8358a','#6b3fa0','#f0813a','#d4297a','#f7c94a','#8b52c0','#e86a42','#c4206a'];
 
 let currentUser = null;
 let currentPageId = null;
@@ -440,11 +451,39 @@ function renderSidebar() {
   pages.forEach(p => {
     const el = document.createElement('div');
     el.className = 'page-item' + (p.id === currentPageId ? ' active' : '');
+
     const icon = document.createElement('span'); icon.className = 'page-icon'; icon.textContent = '📋';
+
+    // Name — double-click to rename inline
     const name = document.createElement('span'); name.className = 'page-name'; name.textContent = p.name || 'Untitled';
+    name.title = 'Double-click to rename';
+    name.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      const inp = document.createElement('input');
+      inp.className = 'page-rename-inp';
+      inp.value = p.name || '';
+      inp.maxLength = 40;
+      name.replaceWith(inp);
+      inp.focus(); inp.select();
+      const commit = async () => {
+        const val = inp.value.trim() || 'Untitled';
+        p.name = val; await savePages();
+        inp.replaceWith(name); name.textContent = val;
+        if (p.id === currentPageId) document.getElementById('pageTitle').value = val;
+        renderSidebar();
+      };
+      inp.addEventListener('blur', commit);
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); if (e.key === 'Escape') { inp.replaceWith(name); } });
+    });
+
+    // Rename pencil button
+    const renameBtn = document.createElement('button'); renameBtn.className = 'page-rename-btn'; renameBtn.title = 'Rename'; renameBtn.textContent = '✎';
+    renameBtn.addEventListener('click', (e) => { e.stopPropagation(); name.dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); });
+
     const del = document.createElement('button'); del.className = 'page-del'; del.textContent = '×';
     del.addEventListener('click', e => { e.stopPropagation(); deletePage(p.id); });
-    el.appendChild(icon); el.appendChild(name); el.appendChild(del);
+
+    el.appendChild(icon); el.appendChild(name); el.appendChild(renameBtn); el.appendChild(del);
     el.addEventListener('click', () => { switchPage(p.id); closeSidebar(); });
     list.appendChild(el);
   });
@@ -603,34 +642,52 @@ function buildCard(w) {
   });
   card.appendChild(header); card.appendChild(canvasWrap); card.appendChild(itemsPanel);
 
-  function syncItems() {
-    const wheel = getWheels().find(x => x.id === w.id);
-    const items = wheel ? wheel.items : [];
-    renderItemRows(items); drawOnCanvas(canvas, items, rt[w.id]?.angle || 0);
+  // Always get the live wheel object from memory
+  function liveWh() {
+    const pg = pages.find(p => p.id === currentPageId);
+    return pg ? pg.wheels.find(x => x.id === w.id) : null;
   }
-  function renderItemRows(items) {
+
+  // Redraw canvas from live items
+  function redraw() {
+    const wh = liveWh();
+    drawOnCanvas(canvas, wh ? wh.items : [], rt[w.id]?.angle || 0);
+  }
+
+  // Rebuild the item list DOM from live items (fresh closures each time = correct indices)
+  function renderItemRows() {
+    const wh = liveWh(); if (!wh) return;
     itemList.innerHTML = '';
-    items.forEach((item, i) => {
+    wh.items.forEach((item, i) => {
       const row = document.createElement('div'); row.className = 'item-row';
       const dot = document.createElement('div'); dot.className = 'item-dot'; dot.style.background = COLORS[i % COLORS.length];
       const inp = document.createElement('input'); inp.className = 'item-inp'; inp.type = 'text'; inp.value = item; inp.maxLength = 24;
-      inp.addEventListener('input', async () => {
-        const ws = getWheels(); const wi = ws.findIndex(x => x.id === w.id);
-        if (wi !== -1) { ws[wi].items[i] = inp.value; await saveWheels(ws); drawOnCanvas(canvas, ws[wi].items, rt[w.id]?.angle || 0); }
+      inp.addEventListener('input', () => {
+        const wh2 = liveWh(); if (!wh2) return;
+        wh2.items[i] = inp.value;
+        redraw(); savePages();
       });
       const del = document.createElement('button'); del.className = 'item-del'; del.textContent = '×';
-      del.addEventListener('click', async () => {
-        const ws = getWheels(); const wi = ws.findIndex(x => x.id === w.id);
-        if (wi !== -1) { ws[wi].items.splice(i, 1); await saveWheels(ws); syncItems(); }
+      del.addEventListener('click', () => {
+        const wh2 = liveWh(); if (!wh2) return;
+        wh2.items.splice(i, 1);
+        redraw();         // wheel updates instantly
+        renderItemRows(); // list rebuilds with correct fresh indices
+        savePages();
       });
       row.appendChild(dot); row.appendChild(inp); row.appendChild(del); itemList.appendChild(row);
     });
   }
-  async function doAdd() {
+
+  function syncItems() { renderItemRows(); redraw(); }
+
+  function doAdd() {
     const val = addInp.value.trim(); if (!val) return;
-    const ws = getWheels(); const wi = ws.findIndex(x => x.id === w.id); if (wi === -1) return;
-    ws[wi].items.push(val); await saveWheels(ws); addInp.value = '';
-    renderItemRows(ws[wi].items); drawOnCanvas(canvas, ws[wi].items, rt[w.id]?.angle || 0);
+    const wh = liveWh(); if (!wh) return;
+    wh.items.push(val); addInp.value = '';
+    redraw();         // wheel updates instantly
+    renderItemRows(); // list updates instantly
+    savePages();
   }
   addBtn.addEventListener('click', doAdd);
   addInp.addEventListener('keydown', e => { if (e.key === 'Enter') doAdd(); });
@@ -656,7 +713,7 @@ function drawOnCanvas(canvas, items, angle) {
     ctx.strokeStyle = 'white'; ctx.lineWidth = 4; ctx.stroke();
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + arc / 2);
     const label = items[i].length > 14 ? items[i].slice(0, 14) + '…' : items[i];
-    const fontSize = Math.min(26, Math.max(12, Math.floor(190 / Math.max(n, 2))));
+    const fontSize = Math.min(34, Math.max(16, Math.floor(240 / Math.max(n, 2))));
     ctx.font = `600 ${fontSize}px -apple-system, sans-serif`; ctx.fillStyle = '#2c2c2e';
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     ctx.shadowColor = 'rgba(255,255,255,0.85)'; ctx.shadowBlur = 5;

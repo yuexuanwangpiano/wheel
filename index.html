@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Spin the Wheel</title>
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%232a1a2e'/%3E%3Ccircle cx='90' cy='90' r='62' fill='none' stroke='%23f5b832' stroke-width='4'/%3E%3Cpath d='M90 28 L90 90 L131 131' stroke='%23e8358a' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L49 131' stroke='%23e8522a' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L152 90' stroke='%23f5b832' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M90 28 L90 90 L28 90' stroke='%236b3fa0' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='90' cy='90' r='10' fill='%23f5b832'/%3E%3Cpolygon points='90,18 95,30 83,30' fill='%23f5b832'/%3E%3C/svg%3E">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wheel">
+<title>Spin the Wheel</title>
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -148,16 +147,14 @@ input { -webkit-appearance: none; font-family: inherit; }
 .page-item.active .page-name { color: var(--accent3); font-weight: 600; }
 .page-icon { font-size: .95rem; flex-shrink: 0; }
 .page-name { flex: 1; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.75); }
-.page-del { background: none; border: none; color: rgba(255,255,255,0.25); font-size: 1rem; padding: 2px 4px; border-radius: 4px; opacity: 0; transition: opacity .12s, color .12s; }
-.page-item:hover .page-del { opacity: 1; }
+.page-del { background: none; border: none; color: rgba(255,255,255,0.35); font-size: 1rem; padding: 2px 4px; border-radius: 4px; transition: color .12s; flex-shrink: 0; }
 .page-del:hover { color: var(--accent2); }
 .sb-new-page-btn { margin: 8px; width: calc(100% - 16px); padding: 9px; font-size: .85rem; font-weight: 600; color: var(--accent3); background: rgba(245,184,50,0.12); border: none; border-radius: 9px; transition: background .12s; }
 .sb-new-page-btn:active { background: rgba(245,184,50,0.22); }
 .sb-footer { padding: 10px 8px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
 .sb-logout { width: 100%; padding: 9px; font-size: .83rem; font-weight: 600; color: rgba(255,255,255,0.4); background: none; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 9px; transition: color .12s, border-color .12s; }
 .sb-logout:hover { color: var(--accent2); border-color: var(--accent2); }
-.page-rename-btn { background: none; border: none; color: rgba(255,255,255,0.25); font-size: 0.85rem; padding: 2px 3px; border-radius: 4px; opacity: 0; transition: opacity .12s, color .12s; cursor: pointer; flex-shrink: 0; }
-.page-item:hover .page-rename-btn { opacity: 1; }
+.page-rename-btn { background: none; border: none; color: rgba(255,255,255,0.35); font-size: 0.85rem; padding: 2px 3px; border-radius: 4px; transition: color .12s; cursor: pointer; flex-shrink: 0; }
 .page-rename-btn:hover { color: var(--accent3); }
 .page-rename-inp { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid var(--accent3); border-radius: 5px; color: white; font-size: .88rem; padding: 2px 6px; outline: none; min-width: 0; }
 
@@ -172,11 +169,18 @@ input { -webkit-appearance: none; font-family: inherit; }
 #pageTitle::placeholder { color: var(--muted); font-weight: 400; }
 
 /* Wheel grid */
-#wheelGrid { display: grid; gap: 16px; padding: 20px 20px 0; }
+#wheelGrid { display: grid; gap: 16px; padding: 20px 20px 0; max-width: 780px; margin-inline: auto; width: 100%; }
 #wheelGrid[data-count="1"] { grid-template-columns: minmax(0, 380px); justify-content: center; }
-#wheelGrid[data-count="2"], #wheelGrid[data-count="3"], #wheelGrid[data-count="4"] { grid-template-columns: repeat(2, 1fr); max-width: 780px; margin-inline: auto; width: 100%; }
+#wheelGrid[data-count="2"] { grid-template-columns: repeat(2, 1fr); }
+#wheelGrid[data-count="3"] { grid-template-columns: repeat(2, 1fr); }
+#wheelGrid[data-count="4"] { grid-template-columns: repeat(2, 1fr); }
+/* Triangle layout: 3rd wheel spans both columns and centers */
+#wheelGrid[data-count="3"] .wheel-card:nth-child(3) { grid-column: 1 / -1; max-width: calc(50% - 8px); margin-inline: auto; }
 @media (max-width: 520px) {
-  #wheelGrid[data-count="2"], #wheelGrid[data-count="3"], #wheelGrid[data-count="4"] { grid-template-columns: 1fr; max-width: 400px; justify-content: center; }
+  #wheelGrid[data-count="2"],
+  #wheelGrid[data-count="3"],
+  #wheelGrid[data-count="4"] { grid-template-columns: 1fr; max-width: 400px; }
+  #wheelGrid[data-count="3"] .wheel-card:nth-child(3) { grid-column: 1; max-width: 100%; }
 }
 
 /* Bottom bar */
@@ -207,11 +211,37 @@ input { -webkit-appearance: none; font-family: inherit; }
 .wheel-wrap { position: relative; width: var(--ws, 240px); height: var(--ws, 240px); }
 #wheelGrid[data-count="1"] .wheel-wrap { --ws: 280px; }
 #wheelGrid[data-count="2"] .wheel-wrap { --ws: min(230px, 38vw); }
-#wheelGrid[data-count="3"] .wheel-wrap, #wheelGrid[data-count="4"] .wheel-wrap { --ws: min(200px, 36vw); }
+#wheelGrid[data-count="3"] .wheel-wrap { --ws: min(220px, 36vw); }
+#wheelGrid[data-count="4"] .wheel-wrap { --ws: min(200px, 34vw); }
 @media (max-width: 520px) { #wheelGrid .wheel-wrap { --ws: min(270px, 82vw) !important; } }
 .pointer-arrow { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--accent3); filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)); z-index: 2; }
 .wheel-canvas { width: 100%; height: 100%; display: block; touch-action: none; }
 .card-result { margin-top: 9px; font-size: .9rem; font-weight: 700; min-height: 1.3em; text-align: center; color: var(--red); }
+/* Result overlay on top of wheel */
+.wheel-result-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.wheel-result-overlay.visible { opacity: 1; }
+.wheel-result-bubble {
+  background: rgba(255,255,255,0.92);
+  border-radius: 16px;
+  padding: 10px 18px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  text-align: center;
+  max-width: 85%;
+  word-break: break-word;
+  border: 2px solid var(--accent3);
+}
 .card-items { border-top: 1px solid var(--border); padding: 11px 13px 15px; }
 .add-row { display: flex; gap: 7px; margin-bottom: 8px; }
 .add-row input { flex: 1; padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-size: .84rem; background: var(--bg); outline: none; transition: border-color .15s; }
@@ -571,7 +601,9 @@ function updateSpinBtn() {
 function spinAll() {
   const wheels = getWheels();
   if (!wheels.length || Object.values(rt).some(s => s.spinning)) return;
+  // Clear previous results
   document.querySelectorAll('.card-result').forEach(el => el.textContent = '');
+  document.querySelectorAll('.wheel-result-overlay').forEach(el => el.classList.remove('visible'));
   const t0 = performance.now();
   wheels.forEach(w => spinWheel(w, t0));
   updateSpinBtn();
@@ -581,8 +613,11 @@ function spinWheel(w, t0) {
   if (!state || state.spinning) return;
   const canvas = document.querySelector(`.wheel-card[data-id="${w.id}"] .wheel-canvas`);
   const resultEl = document.querySelector(`.wheel-card[data-id="${w.id}"] .card-result`);
+  const overlay = document.querySelector(`.wheel-card[data-id="${w.id}"] .wheel-result-overlay`);
+  const bubble = overlay?.querySelector('.wheel-result-bubble');
   if (!canvas) return;
   state.spinning = true;
+  overlay?.classList.remove('visible');
   const totalRot = (4 + Math.random() * 3) * Math.PI * 2 + Math.random() * Math.PI * 2;
   const duration = 3800 + Math.random() * 800;
   const startAngle = state.angle;
@@ -599,7 +634,10 @@ function spinWheel(w, t0) {
       if (items.length) {
         const arc = (Math.PI * 2) / items.length;
         const rel = ((-Math.PI / 2 - state.angle) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-        resultEl.textContent = items[Math.floor(rel / arc) % items.length];
+        const winner = items[Math.floor(rel / arc) % items.length];
+        if (resultEl) resultEl.textContent = winner;
+        if (bubble) bubble.textContent = winner;
+        if (overlay) overlay.classList.add('visible'); // show overlay
       }
       updateSpinBtn();
     }
@@ -627,6 +665,10 @@ function buildCard(w) {
   const pointer = document.createElement('div'); pointer.className = 'pointer-arrow';
   const canvas = document.createElement('canvas'); canvas.className = 'wheel-canvas'; canvas.width = 500; canvas.height = 500;
   wheelWrap.appendChild(pointer); wheelWrap.appendChild(canvas);
+  const resultOverlay = document.createElement('div'); resultOverlay.className = 'wheel-result-overlay';
+  const resultBubble = document.createElement('div'); resultBubble.className = 'wheel-result-bubble';
+  resultOverlay.appendChild(resultBubble); wheelWrap.appendChild(resultOverlay);
+  resultOverlay.addEventListener('click', () => resultOverlay.classList.remove('visible'));
   const resultEl = document.createElement('div'); resultEl.className = 'card-result';
   canvasWrap.appendChild(wheelWrap); canvasWrap.appendChild(resultEl);
   const itemsPanel = document.createElement('div'); itemsPanel.className = 'card-items'; itemsPanel.hidden = true;
